@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string-array name="movies_spinner">
+        <item>新上映</item>
+        <item>3D</item>
+        <item>石家庄</item>
+        <item>北京</item>
+        <item>保定</item>
+    </string-array>
+    <string-array name="weather_locations">
+        <item>石家庄</item>
+        <item>北京</item>
+        <item>保定</item>
+        <item>上海</item>
+        <item>深圳</item>
+        <item>哈尔滨</item>
+        <item>苏州</item>
+        <item>广州</item>
+    </string-array>
+
+</resources>

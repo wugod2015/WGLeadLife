@@ -1,5 +1,26 @@
 <resources>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--  -->
+    <dimen name="textsize_level_special">18sp</dimen>
+    <dimen name="textsize_level_one">15sp</dimen>
+    <dimen name="textsize_level_two">13sp</dimen>
+    <dimen name="textsize_level_three">11sp</dimen>
+    <dimen name="msg_unread_bg_height">17dp</dimen>
+    <dimen name="msg_unread_textsize">9sp</dimen>
+    <dimen name="top_bar_height">46dp</dimen>
+    <!--  -->
+
+    <dimen name="lock_text_size">16sp</dimen>
+    <dimen name="lock_button_size">60dp</dimen>
+    <dimen name="lock_delete_button_size">16dp</dimen>
+    <dimen name="lock_horizontal_spacing">32dp</dimen>
+    <dimen name="lock_vertical_spacing">0dp</dimen>
+    
+    <dimen name="lock_dot_diameter">8dp</dimen>
+    <dimen name="lock_dot_spacing">8dp</dimen>
+
 </resources>

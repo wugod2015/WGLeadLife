@@ -3,4 +3,33 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!--  -->
+    <color name="top_bar_bg">#3b97c7</color>
+    <color name="top_bar_title_text">#ffffff</color>
+    <!--  -->
+    <color name="textcolor_level_one">#2f2f2f</color>
+    <color name="textcolor_level_two">#757575</color>
+    <color name="textcolor_level_three">#999</color>
+    <color name="textcolor_unclicked">#b3b3b3</color>
+    <color name="textcolor_focused_red">#e83e3e</color>
+    <color name="textcolor_focused_blue">#4fc1e9</color>
+    <!--  -->
+    <color name="common_bg_gray">#efefef</color>
+    <color name="list_border">#e7e9e8</color>
+    <color name="status_bar_color">#88333333</color>
+    <!--  -->
+    <color name="meeting_code_bg_in">#62aa6e</color>
+    <color name="meeting_code_bg_out">#3b97c7</color>
+    <!--  -->
+    <color name="white">#ffffff</color>
+    <color name="red">#ff0000</color>
+    <color name="blue">#0000ff</color>
+    <color name="green">#00ff00</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <!--  -->
+
+    <color name="lock_greyish">#aaa8a8</color>
+    <color name="lock_mine_shaft">#303030</color>
+    <color name="black_overlay">#66000000</color>
 </resources>
