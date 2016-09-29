@@ -13,7 +13,7 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
  * Master of DAO (schema version 3): knows all DAOs.
 */
 public class DaoMaster extends AbstractDaoMaster {
-    public static final int SCHEMA_VERSION = 3;
+    public static final int SCHEMA_VERSION = 4;
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
@@ -21,6 +21,9 @@ public class DaoMaster extends AbstractDaoMaster {
         WeatherResultDao.createTable(db, ifNotExists);
         WeatherDao.createTable(db, ifNotExists);
         Weather_IndexDao.createTable(db, ifNotExists);
+        LeadPlanDao.createTable(db, ifNotExists);
+        LeadRecordDao.createTable(db, ifNotExists);
+        PlanRecordDao.createTable(db, ifNotExists);
     }
     
     /** Drops underlying database table using DAOs. */
@@ -29,6 +32,9 @@ public class DaoMaster extends AbstractDaoMaster {
         WeatherResultDao.dropTable(db, ifExists);
         WeatherDao.dropTable(db, ifExists);
         Weather_IndexDao.dropTable(db, ifExists);
+        LeadPlanDao.dropTable(db, ifExists);
+        LeadRecordDao.dropTable(db, ifExists);
+        PlanRecordDao.dropTable(db, ifExists);
     }
     
     public static abstract class OpenHelper extends SQLiteOpenHelper {
@@ -64,6 +70,9 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(WeatherResultDao.class);
         registerDaoClass(WeatherDao.class);
         registerDaoClass(Weather_IndexDao.class);
+        registerDaoClass(LeadPlanDao.class);
+        registerDaoClass(LeadRecordDao.class);
+        registerDaoClass(PlanRecordDao.class);
     }
     
     public DaoSession newSession() {

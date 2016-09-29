@@ -4,7 +4,10 @@ import java.util.Map;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.jackhan.wgleadlife.bean.LeadPlan;
+import com.jackhan.wgleadlife.bean.LeadRecord;
 import com.jackhan.wgleadlife.bean.Movie;
+import com.jackhan.wgleadlife.bean.PlanRecord;
 import com.jackhan.wgleadlife.bean.Weather;
 import com.jackhan.wgleadlife.bean.WeatherResult;
 import com.jackhan.wgleadlife.bean.Weather_Index;
@@ -18,7 +21,7 @@ import de.greenrobot.dao.internal.DaoConfig;
 
 /**
  * {@inheritDoc}
- * 
+ *
  * @see AbstractDaoSession
  */
 public class DaoSession extends AbstractDaoSession {
@@ -27,11 +30,17 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig weatherResultDaoConfig;
     private final DaoConfig weatherDaoConfig;
     private final DaoConfig weather_IndexDaoConfig;
+    private final DaoConfig leadPlanDaoConfig;
+    private final DaoConfig leadRecordDaoConfig;
+    private final DaoConfig planRecordDaoConfig;
 
     private final MovieDao movieDao;
     private final WeatherResultDao weatherResultDao;
     private final WeatherDao weatherDao;
     private final Weather_IndexDao weather_IndexDao;
+    private final LeadPlanDao leadPlanDao;
+    private final LeadRecordDao leadRecordDao;
+    private final PlanRecordDao planRecordDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
@@ -49,22 +58,54 @@ public class DaoSession extends AbstractDaoSession {
         weather_IndexDaoConfig = daoConfigMap.get(Weather_IndexDao.class).clone();
         weather_IndexDaoConfig.initIdentityScope(type);
 
+        leadPlanDaoConfig = daoConfigMap.get(LeadPlanDao.class).clone();
+        leadPlanDaoConfig.initIdentityScope(type);
+
+        leadRecordDaoConfig = daoConfigMap.get(LeadRecordDao.class).clone();
+        leadRecordDaoConfig.initIdentityScope(type);
+
+        planRecordDaoConfig = daoConfigMap.get(PlanRecordDao.class).clone();
+        planRecordDaoConfig.initIdentityScope(type);
+
+
         movieDao = new MovieDao(movieDaoConfig, this);
         weatherResultDao = new WeatherResultDao(weatherResultDaoConfig, this);
         weatherDao = new WeatherDao(weatherDaoConfig, this);
         weather_IndexDao = new Weather_IndexDao(weather_IndexDaoConfig, this);
+        leadPlanDao = new LeadPlanDao(leadPlanDaoConfig, this);
+        leadRecordDao = new LeadRecordDao(leadRecordDaoConfig, this);
+        planRecordDao = new PlanRecordDao(planRecordDaoConfig, this);
 
         registerDao(Movie.class, movieDao);
         registerDao(WeatherResult.class, weatherResultDao);
         registerDao(Weather.class, weatherDao);
         registerDao(Weather_Index.class, weather_IndexDao);
+        registerDao(LeadPlan.class, leadPlanDao);
+        registerDao(LeadRecord.class, leadRecordDao);
+        registerDao(PlanRecord.class, planRecordDao);
     }
-    
+
     public void clear() {
         movieDaoConfig.getIdentityScope().clear();
         weatherResultDaoConfig.getIdentityScope().clear();
         weatherDaoConfig.getIdentityScope().clear();
         weather_IndexDaoConfig.getIdentityScope().clear();
+
+        leadPlanDaoConfig.getIdentityScope().clear();
+        leadRecordDaoConfig.getIdentityScope().clear();
+        planRecordDaoConfig.getIdentityScope().clear();
+    }
+
+    public LeadPlanDao getLeadPlanDao() {
+        return leadPlanDao;
+    }
+
+    public LeadRecordDao getLeadRecordDao() {
+        return leadRecordDao;
+    }
+
+    public PlanRecordDao getPlanRecordDao() {
+        return planRecordDao;
     }
 
     public MovieDao getMovieDao() {
