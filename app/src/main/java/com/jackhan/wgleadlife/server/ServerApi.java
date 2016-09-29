@@ -46,8 +46,6 @@ public class ServerApi extends BaseApi {
         // @POST("cimservice_api/service")
         // Observable<String> getXML(@Body String xml );
 
-        @POST("接口")
-        Observable<String> login(@QueryMap Map<String, String> params);
     }
 
     protected final static BaseService service = getRetrofit().create(
@@ -91,22 +89,7 @@ public class ServerApi extends BaseApi {
         return params;
     }
 
-	/*
-     * 09-18 09:52:09.013: I/MyHttpClient(6210):
-	 * >>>>>>>>doPost_url:http://211.90
-	 * .22.137:18080/aqyh/android/login/signLogin[user=15932697669, pwd=888888,
-	 * versionName=2.1.5]
-	 */
 
-    public static Observable<String> login() {
-        // TODO Auto-generated method stub
-
-        Map<String, String> params = new HashMap<>();
-        params.put("user", "15932697669");
-        params.put("pwd", "888888");
-        params.put("versionName", "2.1.5");
-        return service.login(params);
-    }
 
     public static Observable<DataResult<WeatherResult>> getWeathers(
             String location) {

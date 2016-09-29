@@ -10,5 +10,5 @@ public class Urls {
 	 */
 	final static public String HOST = "http://api.map.baidu.com";
 	// final static public String SERVER_URL = HOST + "/telematics/v3/";
-	final static public String SERVER_URL = "http://211.90.22.137:18080/aqyh/android/login/signLogin/";
+	final static public String SERVER_URL = "http://api.map.baidu.com/telematics/v3/";
 }

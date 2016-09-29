@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jackhan.wgleadlife.utils.LogUtils;
+
 public class PinGridLayoutManager extends GridLayoutManager {
 
+	static String TAG="PinGridLayoutManager";
 	public PinGridLayoutManager(Context context, int spanCount,
 			int orientation, boolean reverseLayout) {
 		super(context, spanCount, orientation, reverseLayout);
@@ -60,7 +63,13 @@ public class PinGridLayoutManager extends GridLayoutManager {
 
 	private void measureScrapChild(RecyclerView.Recycler recycler,
 			int position, int widthSpec, int heightSpec, int[] measuredDimension) {
-		View view = recycler.getViewForPosition(position);
+		View view = null;
+		try {
+			view = recycler.getViewForPosition(position);
+		} catch (Exception e) {
+			e.printStackTrace();
+			LogUtils.e(TAG,"measureScrapChild-e:"+e);
+		}
 
 		// For adding Item Decor Insets to view
 		// super.measureChildWithMargins(view, 0, 0);
