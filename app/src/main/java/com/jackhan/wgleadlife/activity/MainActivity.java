@@ -1,6 +1,7 @@
 package com.jackhan.wgleadlife.activity;
 
 import java.io.File;
+import java.util.Date;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -24,8 +25,13 @@ import android.widget.TextView;
 
 import com.jackhan.wgleadlife.ActivityUtils;
 import com.jackhan.wgleadlife.R;
+import com.jackhan.wgleadlife.bean.LeadPlan;
+import com.jackhan.wgleadlife.db.DBHelper;
+import com.jackhan.wgleadlife.db.LeadPlanDao;
+import com.jackhan.wgleadlife.fragment.AddPlanDialog;
 import com.jackhan.wgleadlife.fragment.MainDrawerMenuFragment;
 import com.jackhan.wgleadlife.server.ServerApi;
+import com.jackhan.wgleadlife.utils.DateUtils;
 import com.jackhan.wgleadlife.utils.DisplayUtils;
 import com.jackhan.wgleadlife.utils.DownLoadUtils;
 import com.jackhan.wgleadlife.utils.FileUtils;
@@ -141,9 +147,43 @@ public class MainActivity extends LockableActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO Auto-generated method stub
         LogUtils.d(TAG, "onOptionsItemSelected");
+        switch (item.getItemId()) {
+            case R.string.add_plan:
+
+                showAddPlanDialog();
+                break;
+            case R.string.add_record:
+
+                addRecord();
+                break;
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
+    public void showAddPlanDialog() {
+
+        AddPlanDialog addPlanDialog = new AddPlanDialog();
+        addPlanDialog.setOnAddPlanClickListener(new AddPlanDialog.OnAddPlanClickListener() {
+            @Override
+            public void onAdd(String title, String content) {
+
+                addPlan(title, content);
+            }
+        });
+        addPlanDialog.show(getSupportFragmentManager(), "addPlanDialog");
+    }
+
+    public void addPlan(String title, String content) {
+        LeadPlanDao leadPlanDao = DBHelper.getDaoMaster(mContext).newSession().getLeadPlanDao();
+        LeadPlan leadPlan = new LeadPlan(System.currentTimeMillis() + "", title, content, new Date());
+        leadPlanDao.insert(leadPlan);
+    }
+
+    public void addRecord() {
+
+    }
 
     public void onDrawerSwitch(boolean isCanOpen) {
         // TODO Auto-generated method stub

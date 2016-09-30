@@ -19,6 +19,9 @@ public class LeadPlan {
      * Not-null value.
      */
     private String plan_id;
+    private String title;
+    private String content;
+    private java.util.Date create_date;
     private java.util.Date start_date;
     private java.util.Date end_date;
     private String quantity;
@@ -43,8 +46,18 @@ public class LeadPlan {
         this.plan_id = plan_id;
     }
 
-    public LeadPlan(String plan_id, java.util.Date start_date, java.util.Date end_date, String quantity, String unit) {
+    public LeadPlan(String plan_id, String title, String content, java.util.Date create_date) {
         this.plan_id = plan_id;
+        this.title = title;
+        this.content = content;
+        this.create_date = create_date;
+    }
+
+    public LeadPlan(String plan_id, String title, String content, java.util.Date create_date, java.util.Date start_date, java.util.Date end_date, String quantity, String unit) {
+        this.plan_id = plan_id;
+        this.title = title;
+        this.content = content;
+        this.create_date = create_date;
         this.start_date = start_date;
         this.end_date = end_date;
         this.quantity = quantity;
@@ -71,6 +84,30 @@ public class LeadPlan {
      */
     public void setPlan_id(String plan_id) {
         this.plan_id = plan_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public java.util.Date getCreate_date() {
+        return create_date;
+    }
+
+    public void setCreate_date(java.util.Date create_date) {
+        this.create_date = create_date;
     }
 
     public java.util.Date getStart_date() {
