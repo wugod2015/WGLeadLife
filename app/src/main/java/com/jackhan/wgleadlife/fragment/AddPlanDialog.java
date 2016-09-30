@@ -18,15 +18,6 @@ import com.jackhan.wgleadlife.utils.ToastUtils;
  * Created by Administrator on 2016/9/30.
  */
 public class AddPlanDialog extends DialogFragment {
-    public AddPlanDialog.OnAddPlanClickListener getOnAddPlanClickListener() {
-        return onAddPlanClickListener;
-    }
-
-    public void setOnAddPlanClickListener(AddPlanDialog.OnAddPlanClickListener onAddPlanClickListener) {
-        onAddPlanClickListener = onAddPlanClickListener;
-    }
-
-    OnAddPlanClickListener onAddPlanClickListener;
 
     public interface OnAddPlanClickListener {
         public void onAdd(String title, String content);
@@ -44,7 +35,7 @@ public class AddPlanDialog extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 String title = titleET.getText().toString();
                 String content = contentET.getText().toString();
-                if(TextUtils.isEmpty(title)&&TextUtils.isEmpty(content)){
+                if (TextUtils.isEmpty(title) && TextUtils.isEmpty(content)) {
                     ToastUtils.showShortToast("不能为空");
                     return;
                 }
@@ -52,6 +43,7 @@ public class AddPlanDialog extends DialogFragment {
                     titleET.setText(content);
                     title = titleET.getText().toString();
                 }
+                OnAddPlanClickListener onAddPlanClickListener = (OnAddPlanClickListener) getActivity();
                 onAddPlanClickListener.onAdd(title, content);
             }
         }).setNegativeButton("Cancel", null);

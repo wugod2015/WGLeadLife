@@ -2,6 +2,7 @@ package com.jackhan.wgleadlife.activity;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -40,7 +41,7 @@ import com.jackhan.wgleadlife.utils.ToastUtils;
 import com.jackhan.wgleadlife.utils.rxbus.RxEvent;
 
 @SuppressLint("NewApi")
-public class MainActivity extends LockableActivity {
+public class MainActivity extends LockableActivity implements AddPlanDialog.OnAddPlanClickListener {
     private static final String TAG = "MainActivity";
     TextView namesText;
     Toolbar toolbar;
@@ -50,12 +51,15 @@ public class MainActivity extends LockableActivity {
     DrawerLayout mDrawerLayout;
     private MainDrawerMenuFragment drawerMenuFragment;
 
+    LeadPlanDao leadPlanDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_drawer);
-
+        leadPlanDao = DBHelper.getDaoMaster(mContext).newSession().getLeadPlanDao();
+        getPlans();
     }
 
     @Override
@@ -148,11 +152,11 @@ public class MainActivity extends LockableActivity {
         // TODO Auto-generated method stub
         LogUtils.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
-            case R.string.add_plan:
+            case R.id.add_plan:
 
                 showAddPlanDialog();
                 break;
-            case R.string.add_record:
+            case R.id.add_record:
 
                 addRecord();
                 break;
@@ -165,20 +169,31 @@ public class MainActivity extends LockableActivity {
     public void showAddPlanDialog() {
 
         AddPlanDialog addPlanDialog = new AddPlanDialog();
-        addPlanDialog.setOnAddPlanClickListener(new AddPlanDialog.OnAddPlanClickListener() {
-            @Override
-            public void onAdd(String title, String content) {
-
-                addPlan(title, content);
-            }
-        });
         addPlanDialog.show(getSupportFragmentManager(), "addPlanDialog");
     }
 
+    @Override
+    public void onAdd(String title, String content) {
+
+        addPlan(title, content);
+    }
+
+    public void getPlans() {
+        List<LeadPlan> leadPlans = leadPlanDao.loadAll();
+        for (LeadPlan leadPlan : leadPlans) {
+            LogUtils.i(TAG, "LeadPlan: title = " + leadPlan.getTitle() + ", content = " + leadPlan.getContent());
+        }
+    }
+
     public void addPlan(String title, String content) {
-        LeadPlanDao leadPlanDao = DBHelper.getDaoMaster(mContext).newSession().getLeadPlanDao();
         LeadPlan leadPlan = new LeadPlan(System.currentTimeMillis() + "", title, content, new Date());
-        leadPlanDao.insert(leadPlan);
+        Long i = leadPlanDao.insert(leadPlan);
+        if (i != -1) {
+            ToastUtils.showShortToast("Success");
+            getPlans();
+        } else {
+            ToastUtils.showShortToast("Fail");
+        }
     }
 
     public void addRecord() {
@@ -195,4 +210,6 @@ public class MainActivity extends LockableActivity {
 
         }
     }
+
+
 }

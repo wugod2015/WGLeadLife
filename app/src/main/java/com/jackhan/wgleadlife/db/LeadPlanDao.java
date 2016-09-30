@@ -24,10 +24,13 @@ public class LeadPlanDao extends AbstractDao<LeadPlan, String> {
     */
     public static class Properties {
         public final static Property Plan_id = new Property(0, String.class, "plan_id", true, "PLAN_ID");
-        public final static Property Start_date = new Property(1, java.util.Date.class, "start_date", false, "START_DATE");
-        public final static Property End_date = new Property(2, java.util.Date.class, "end_date", false, "END_DATE");
-        public final static Property Quantity = new Property(3, String.class, "quantity", false, "QUANTITY");
-        public final static Property Unit = new Property(4, String.class, "unit", false, "UNIT");
+        public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
+        public final static Property Content = new Property(2, String.class, "content", false, "CONTENT");
+        public final static Property Create_date = new Property(3, java.util.Date.class, "create_date", false, "CREATE_DATE");
+        public final static Property Start_date = new Property(4, java.util.Date.class, "start_date", false, "START_DATE");
+        public final static Property End_date = new Property(5, java.util.Date.class, "end_date", false, "END_DATE");
+        public final static Property Quantity = new Property(6, String.class, "quantity", false, "QUANTITY");
+        public final static Property Unit = new Property(7, String.class, "unit", false, "UNIT");
     };
 
     private DaoSession daoSession;
@@ -47,10 +50,13 @@ public class LeadPlanDao extends AbstractDao<LeadPlan, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"LEAD_PLAN\" (" + //
                 "\"PLAN_ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: plan_id
-                "\"START_DATE\" INTEGER," + // 1: start_date
-                "\"END_DATE\" INTEGER," + // 2: end_date
-                "\"QUANTITY\" TEXT," + // 3: quantity
-                "\"UNIT\" TEXT);"); // 4: unit
+                "\"TITLE\" TEXT," + // 1: title
+                "\"CONTENT\" TEXT," + // 2: content
+                "\"CREATE_DATE\" INTEGER," + // 3: create_date
+                "\"START_DATE\" INTEGER," + // 4: start_date
+                "\"END_DATE\" INTEGER," + // 5: end_date
+                "\"QUANTITY\" TEXT," + // 6: quantity
+                "\"UNIT\" TEXT);"); // 7: unit
     }
 
     /** Drops the underlying database table. */
@@ -65,24 +71,39 @@ public class LeadPlanDao extends AbstractDao<LeadPlan, String> {
         stmt.clearBindings();
         stmt.bindString(1, entity.getPlan_id());
  
+        String title = entity.getTitle();
+        if (title != null) {
+            stmt.bindString(2, title);
+        }
+ 
+        String content = entity.getContent();
+        if (content != null) {
+            stmt.bindString(3, content);
+        }
+ 
+        java.util.Date create_date = entity.getCreate_date();
+        if (create_date != null) {
+            stmt.bindLong(4, create_date.getTime());
+        }
+ 
         java.util.Date start_date = entity.getStart_date();
         if (start_date != null) {
-            stmt.bindLong(2, start_date.getTime());
+            stmt.bindLong(5, start_date.getTime());
         }
  
         java.util.Date end_date = entity.getEnd_date();
         if (end_date != null) {
-            stmt.bindLong(3, end_date.getTime());
+            stmt.bindLong(6, end_date.getTime());
         }
  
         String quantity = entity.getQuantity();
         if (quantity != null) {
-            stmt.bindString(4, quantity);
+            stmt.bindString(7, quantity);
         }
  
         String unit = entity.getUnit();
         if (unit != null) {
-            stmt.bindString(5, unit);
+            stmt.bindString(8, unit);
         }
     }
 
@@ -103,10 +124,13 @@ public class LeadPlanDao extends AbstractDao<LeadPlan, String> {
     public LeadPlan readEntity(Cursor cursor, int offset) {
         LeadPlan entity = new LeadPlan( //
             cursor.getString(offset + 0), // plan_id
-            cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)), // start_date
-            cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)), // end_date
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // quantity
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // unit
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // title
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // content
+            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // create_date
+            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // start_date
+            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // end_date
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // quantity
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // unit
         );
         return entity;
     }
@@ -115,10 +139,13 @@ public class LeadPlanDao extends AbstractDao<LeadPlan, String> {
     @Override
     public void readEntity(Cursor cursor, LeadPlan entity, int offset) {
         entity.setPlan_id(cursor.getString(offset + 0));
-        entity.setStart_date(cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)));
-        entity.setEnd_date(cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)));
-        entity.setQuantity(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUnit(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setTitle(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setContent(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setCreate_date(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setStart_date(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
+        entity.setEnd_date(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setQuantity(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setUnit(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */
