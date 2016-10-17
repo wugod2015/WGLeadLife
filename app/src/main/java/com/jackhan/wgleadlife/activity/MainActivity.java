@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
@@ -30,6 +31,7 @@ import com.jackhan.wgleadlife.bean.LeadPlan;
 import com.jackhan.wgleadlife.db.DBHelper;
 import com.jackhan.wgleadlife.db.LeadPlanDao;
 import com.jackhan.wgleadlife.fragment.AddPlanDialog;
+import com.jackhan.wgleadlife.fragment.LeadPlanFragment;
 import com.jackhan.wgleadlife.fragment.MainDrawerMenuFragment;
 import com.jackhan.wgleadlife.server.ServerApi;
 import com.jackhan.wgleadlife.utils.DateUtils;
@@ -41,7 +43,7 @@ import com.jackhan.wgleadlife.utils.ToastUtils;
 import com.jackhan.wgleadlife.utils.rxbus.RxEvent;
 
 @SuppressLint("NewApi")
-public class MainActivity extends LockableActivity implements AddPlanDialog.OnAddPlanClickListener {
+public class MainActivity extends LockableActivity implements AddPlanDialog.OnAddPlanClickListener,LeadPlanFragment.OnListFragmentInteractionListener {
     private static final String TAG = "MainActivity";
     TextView namesText;
     Toolbar toolbar;
@@ -50,6 +52,7 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
 
     DrawerLayout mDrawerLayout;
     private MainDrawerMenuFragment drawerMenuFragment;
+    LeadPlanFragment leadPlanFragment;
 
     LeadPlanDao leadPlanDao;
 
@@ -96,6 +99,11 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
         LogUtils.i(TAG, "screenWidth:" + wh + "，drawer_menu_width:"
                 + layoutParams.width);
         view.setLayoutParams(layoutParams);
+
+        leadPlanFragment=new LeadPlanFragment();
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.main_content,leadPlanFragment);
+        fragmentTransaction.commit();
 
         initToolbar();
     }
@@ -181,7 +189,7 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
     public void getPlans() {
         List<LeadPlan> leadPlans = leadPlanDao.loadAll();
         for (LeadPlan leadPlan : leadPlans) {
-            LogUtils.i(TAG, "LeadPlan: title = " + leadPlan.getTitle() + ", content = " + leadPlan.getContent());
+            LogUtils.i(TAG, "LeadPlan: plan_id = " + leadPlan.getPlan_id() + ",title = " + leadPlan.getTitle() + ", content = " + leadPlan.getContent()+ ", create_date = " + leadPlan.getCreate_date());
         }
     }
 
@@ -212,4 +220,8 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
     }
 
 
+    @Override
+    public void onListFragmentInteraction(LeadPlan item) {
+
+    }
 }

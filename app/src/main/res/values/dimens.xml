@@ -19,8 +19,9 @@
     <dimen name="lock_delete_button_size">16dp</dimen>
     <dimen name="lock_horizontal_spacing">32dp</dimen>
     <dimen name="lock_vertical_spacing">0dp</dimen>
-    
+
     <dimen name="lock_dot_diameter">8dp</dimen>
     <dimen name="lock_dot_spacing">8dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>
