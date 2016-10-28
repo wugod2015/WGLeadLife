@@ -1,19 +1,12 @@
 package com.jackhan.wgleadlife.activity;
 
-import java.io.File;
-import java.util.Date;
-import java.util.List;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.support.v7.widget.ShareActionProvider;
@@ -25,36 +18,42 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.jackhan.wgleadlife.ActivityUtils;
 import com.jackhan.wgleadlife.R;
+import com.jackhan.wgleadlife.adapter.BaseFragmentPagerAdapter;
 import com.jackhan.wgleadlife.bean.LeadPlan;
 import com.jackhan.wgleadlife.db.DBHelper;
 import com.jackhan.wgleadlife.db.LeadPlanDao;
 import com.jackhan.wgleadlife.fragment.AddPlanDialog;
 import com.jackhan.wgleadlife.fragment.LeadPlanFragment;
 import com.jackhan.wgleadlife.fragment.MainDrawerMenuFragment;
-import com.jackhan.wgleadlife.server.ServerApi;
-import com.jackhan.wgleadlife.utils.DateUtils;
 import com.jackhan.wgleadlife.utils.DisplayUtils;
-import com.jackhan.wgleadlife.utils.DownLoadUtils;
-import com.jackhan.wgleadlife.utils.FileUtils;
 import com.jackhan.wgleadlife.utils.LogUtils;
 import com.jackhan.wgleadlife.utils.ToastUtils;
+import com.jackhan.wgleadlife.utils.rxbus.RxBus;
 import com.jackhan.wgleadlife.utils.rxbus.RxEvent;
 
-@SuppressLint("NewApi")
-public class MainActivity extends LockableActivity implements AddPlanDialog.OnAddPlanClickListener,LeadPlanFragment.OnListFragmentInteractionListener {
-    private static final String TAG = "MainActivity";
-    TextView namesText;
-    Toolbar toolbar;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+@SuppressLint("NewApi")
+public class MainActivity extends LockableActivity implements AddPlanDialog.OnAddPlanClickListener, LeadPlanFragment.OnListFragmentInteractionListener {
+    private static final String TAG = "MainActivity";
     public static MainActivity instance;
 
+    TextView namesText;
+    Toolbar toolbar;
     DrawerLayout mDrawerLayout;
     private MainDrawerMenuFragment drawerMenuFragment;
+
     LeadPlanFragment leadPlanFragment;
 
     LeadPlanDao leadPlanDao;
+
+    List<Fragment> fragments=new ArrayList<>();
+    BaseFragmentPagerAdapter fragmentPagerAdapter;
+    ViewPager mViewPager;
+    TabLayout mTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +61,13 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
 
         setContentView(R.layout.activity_main_drawer);
         leadPlanDao = DBHelper.getDaoMaster(mContext).newSession().getLeadPlanDao();
-        getPlans();
     }
 
     @Override
     protected void onRxBusCall(RxEvent rxEvent) {
         // TODO Auto-generated method stub
         super.onRxBusCall(rxEvent);
-        ToastUtils.showShortToast(mContext, TAG + rxEvent.msg);
+        // ToastUtils.showShortToast(mContext, TAG + rxEvent.msg);
     }
 
     @Override
@@ -100,12 +98,32 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
                 + layoutParams.width);
         view.setLayoutParams(layoutParams);
 
-        leadPlanFragment=new LeadPlanFragment();
-        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.main_content,leadPlanFragment);
-        fragmentTransaction.commit();
-
         initToolbar();
+
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+
+        leadPlanFragment = new LeadPlanFragment();
+        fragments.add(leadPlanFragment);
+        mTabLayout.addTab(mTabLayout.newTab().setText("now"));
+
+        fragments.add(new LeadPlanFragment());
+        mTabLayout.addTab(mTabLayout.newTab().setText("all"));
+
+        fragments.add(new LeadPlanFragment());
+        mTabLayout.addTab(mTabLayout.newTab().setText("statistics"));
+
+        fragmentPagerAdapter = new BaseFragmentPagerAdapter(
+                getSupportFragmentManager(),fragments);
+        mViewPager.setAdapter(fragmentPagerAdapter);
+
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTabLayout
+                .setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(
+                        mViewPager));
+        mViewPager
+                .addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(
+                        mTabLayout));
     }
 
     private void initToolbar() {
@@ -186,19 +204,13 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
         addPlan(title, content);
     }
 
-    public void getPlans() {
-        List<LeadPlan> leadPlans = leadPlanDao.loadAll();
-        for (LeadPlan leadPlan : leadPlans) {
-            LogUtils.i(TAG, "LeadPlan: plan_id = " + leadPlan.getPlan_id() + ",title = " + leadPlan.getTitle() + ", content = " + leadPlan.getContent()+ ", create_date = " + leadPlan.getCreate_date());
-        }
-    }
 
     public void addPlan(String title, String content) {
         LeadPlan leadPlan = new LeadPlan(System.currentTimeMillis() + "", title, content, new Date());
         Long i = leadPlanDao.insert(leadPlan);
         if (i != -1) {
             ToastUtils.showShortToast("Success");
-            getPlans();
+            RxBus.getDefault().post(new RxEvent(RxEvent.WHAT_LEADPLAN_ADD));
         } else {
             ToastUtils.showShortToast("Fail");
         }
@@ -224,4 +236,5 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
     public void onListFragmentInteraction(LeadPlan item) {
 
     }
+
 }

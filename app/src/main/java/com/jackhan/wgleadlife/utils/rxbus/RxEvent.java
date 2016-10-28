@@ -6,14 +6,27 @@ package com.jackhan.wgleadlife.utils.rxbus;
  */
 public class RxEvent {
 
-	public int what;
-	public String msg;
-	public Object obj;
+    public final static int WHAT_LEADPLAN_ADD = 1;
 
-	public RxEvent(int what, String msg, Object obj) {
-		// TODO Auto-generated constructor stub
-		this.msg = msg;
-		this.obj = obj;
-		this.what = what;
-	}
+    public int what;
+    public String msg;
+    public Object obj;
+
+    public RxEvent(int what) {
+        // TODO Auto-generated constructor stub
+        this.what = what;
+    }
+
+    public RxEvent(int what, String msg) {
+        // TODO Auto-generated constructor stub
+        this.msg = msg;
+        this.what = what;
+    }
+
+    public RxEvent(int what, String msg, Object obj) {
+        // TODO Auto-generated constructor stub
+        this.msg = msg;
+        this.obj = obj;
+        this.what = what;
+    }
 }

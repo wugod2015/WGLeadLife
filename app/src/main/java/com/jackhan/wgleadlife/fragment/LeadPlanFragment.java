@@ -1,11 +1,11 @@
 package com.jackhan.wgleadlife.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jackhan.wgleadlife.R;
+import com.jackhan.wgleadlife.adapter.BaseRecyclerAdapter;
 import com.jackhan.wgleadlife.adapter.MyLeadPlanRecyclerViewAdapter;
 import com.jackhan.wgleadlife.bean.LeadPlan;
 import com.jackhan.wgleadlife.db.DBHelper;
 import com.jackhan.wgleadlife.db.LeadPlanDao;
 import com.jackhan.wgleadlife.utils.LogUtils;
+import com.jackhan.wgleadlife.utils.rxbus.RxEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BaseRecyclerAdapter.OnRecyclerItemClickListener, BaseRecyclerAdapter.OnRecyclerItemLongClickListener {
     static String TAG = "LeadPlanFragment";
 
     private static final String ARG_PLAN_TYPE = "plan-type";
@@ -56,7 +58,7 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        LogUtils.d(TAG,"onActivityCreated");
+        LogUtils.d(TAG, "onActivityCreated");
 
         leadPlanDao = DBHelper.getDaoMaster(mContext).newSession().getLeadPlanDao();
         getPlans();
@@ -65,7 +67,7 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.d(TAG,"onCreate");
+        LogUtils.d(TAG, "onCreate");
         if (getArguments() != null) {
             mPlanType = getArguments().getInt(ARG_PLAN_TYPE);
         }
@@ -83,7 +85,7 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        LogUtils.d(TAG,"onCreateView");
+        LogUtils.d(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_list_recycler_view, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view
                 .findViewById(R.id.swipe_refresh_layout);
@@ -100,6 +102,8 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         leadPlanList = new ArrayList<>();
         adapter = new MyLeadPlanRecyclerViewAdapter(getActivity(), leadPlanList);
+        adapter.setOnRecyclerItemClickListener(this);
+        adapter.setOnRecyclerItemLongClickListener(this);
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -110,7 +114,7 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
         swipeRefreshLayout.setRefreshing(true);
 
         leadPlanList.clear();
-        leadPlanList .addAll(leadPlanDao.loadAll());
+        leadPlanList.addAll(leadPlanDao.queryBuilder().orderDesc(LeadPlanDao.Properties.Create_date).list());
 
         swipeRefreshLayout.setRefreshing(false);
         adapter.notifyDataSetChanged();
@@ -119,7 +123,7 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        LogUtils.d(TAG,"onAttach");
+        LogUtils.d(TAG, "onAttach");
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
@@ -131,7 +135,7 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onDetach() {
         super.onDetach();
-        LogUtils.d(TAG,"onDetach");
+        LogUtils.d(TAG, "onDetach");
         mListener = null;
     }
 
@@ -144,6 +148,24 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onRefresh() {
         getPlans();
+    }
+
+    @Override
+    public void onRecyclerItemClick(View view, Object item) {
+
+    }
+
+    @Override
+    public void onRecyclerItemLongClick(View view, final Object item) {
+
+        confirmOperationDialog(mContext, "删除plan", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                leadPlanDao.delete((LeadPlan) item);
+                onRefresh();
+            }
+        });
     }
 
     /**
@@ -159,5 +181,17 @@ public class LeadPlanFragment extends BaseFragment implements SwipeRefreshLayout
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(LeadPlan item);
+    }
+
+    @Override
+    protected void onRxBusCall(RxEvent rxEvent) {
+        super.onRxBusCall(rxEvent);
+        switch (rxEvent.what) {
+            case RxEvent.WHAT_LEADPLAN_ADD:
+                onRefresh();
+                break;
+            default:
+                break;
+        }
     }
 }

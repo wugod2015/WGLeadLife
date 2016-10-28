@@ -160,10 +160,10 @@ public class MoviesActivity extends BaseActivity implements OnRefreshListener,
                         .setInterpolator(new AccelerateInterpolator(2));
             }
         });
-        adapter.setOnItemClickListener(new MoviesAdapter.OnRecyclerViewItemClickListener() {
+        adapter.setOnRecyclerItemClickListener(new MoviesAdapter.OnRecyclerItemClickListener() {
 
             @Override
-            public void onItemClick(View view, Object item) {
+            public void onRecyclerItemClick(View view, Object item) {
                 // TODO Auto-generated method stub
                 ActivityUtils.startMovieActivity(mContext, (Movie) item);
             }

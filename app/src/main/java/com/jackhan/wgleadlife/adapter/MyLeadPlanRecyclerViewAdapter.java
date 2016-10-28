@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.jackhan.wgleadlife.R;
 import com.jackhan.wgleadlife.bean.LeadPlan;
+import com.jackhan.wgleadlife.utils.DateUtils;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MyLeadPlanRecyclerViewAdapter extends BaseRecyclerAdapter {
         ViewHolder holder = (ViewHolder) viewHolder;
 
         LeadPlan item = (LeadPlan) list.get(position);
-        holder.mTitleView.setText(item.getTitle());
+        holder.mTimeView.setText(DateUtils.translateDateTime(item.getCreate_date().getTime()));
         holder.mContentView.setText(item.getContent());
     }
 
@@ -42,20 +43,20 @@ public class MyLeadPlanRecyclerViewAdapter extends BaseRecyclerAdapter {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mTitleView;
+        public final TextView mTimeView;
         public final TextView mContentView;
         public LeadPlan mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mTitleView = (TextView) view.findViewById(R.id.title);
+            mTimeView = (TextView) view.findViewById(R.id.time);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mTitleView.getText() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mTimeView.getText() + " '" + mContentView.getText() + "'";
         }
     }
 }
