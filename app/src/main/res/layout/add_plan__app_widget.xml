@@ -1,21 +1,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09C"
+    android:background="@drawable/add_plan_aw_bg"
     android:padding="@dimen/widget_margin">
 
-    <TextView
-        android:id="@+id/appwidget_text"
+
+    <ImageView
+        android:id="@+id/add_plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <TextView
+        android:id="@+id/dailyQuoteTV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/add_plan"
         android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/daily_quote_text"
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold|italic" />
+
+    <ListView
+        android:id="@+id/planListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/add_plan"
+        android:background="#f1efef" />
+
+    <ImageView
+        android:id="@+id/appLogo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
 
 </RelativeLayout>
