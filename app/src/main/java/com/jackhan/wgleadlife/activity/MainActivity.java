@@ -50,7 +50,7 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
 
     LeadPlanDao leadPlanDao;
 
-    List<Fragment> fragments=new ArrayList<>();
+    List<Fragment> fragments = new ArrayList<>();
     BaseFragmentPagerAdapter fragmentPagerAdapter;
     ViewPager mViewPager;
     TabLayout mTabLayout;
@@ -105,16 +105,16 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
 
         leadPlanFragment = new LeadPlanFragment();
         fragments.add(leadPlanFragment);
-        mTabLayout.addTab(mTabLayout.newTab().setText("now"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Today"));
 
         fragments.add(new LeadPlanFragment());
-        mTabLayout.addTab(mTabLayout.newTab().setText("all"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Process"));
 
         fragments.add(new LeadPlanFragment());
-        mTabLayout.addTab(mTabLayout.newTab().setText("statistics"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("All"));
 
         fragmentPagerAdapter = new BaseFragmentPagerAdapter(
-                getSupportFragmentManager(),fragments);
+                getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(fragmentPagerAdapter);
 
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -131,7 +131,7 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
         setSupportActionBar(toolbar);
         // toolbar.setNavigationIcon(R.drawable.ic_more_vert_grey600_36dp);//
         // 设置导航栏图标
-        toolbar.setNavigationIcon(R.drawable.ic_launcher);// 设置app logo
+        toolbar.setNavigationIcon(R.mipmap.ic_launcher);// 设置app logo
         toolbar.setTitle(R.string.app_name);// 设置主标题
         // toolbar.setSubtitle("Subtitle");// 设置子标题
 

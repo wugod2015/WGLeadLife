@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
-    tools:context="com.jackhan.wgleadlife.WeatherActivity$PlaceholderFragment" >
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/date"
@@ -17,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="matrix"
-        android:src="@drawable/ic_launcher" />
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/weather"

@@ -38,7 +38,7 @@ public class MoviesAdapter extends BaseRecyclerAdapter{
 		holder.movie_message.setText(item.getMovie_message());
 		holder.movie_release_date.setText(item.getMovie_release_date() + "上映");
 		Glide.with(context).load(item.getMovie_picture())
-				.placeholder(R.drawable.ic_launcher).centerCrop().crossFade()
+				.placeholder(R.mipmap.ic_launcher).centerCrop().crossFade()
 				.into(holder.movie_picture);
 		if ("1".equals(item.getIs_new()))
 			holder.is_new.setVisibility(View.VISIBLE);
