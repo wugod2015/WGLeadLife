@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -91,6 +92,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/add_plan__app_widget_info" />
         </receiver>
+
+        <activity
+            android:name=".activity.DialogActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.jackhan.wgleadlife.app_widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.jackhan.wgleadlife.R;
+import com.jackhan.wgleadlife.activity.DialogActivity;
+import com.jackhan.wgleadlife.activity.MainActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -16,10 +19,13 @@ public class AddPlan_AppWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        //CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.add_plan__app_widget);
-        //views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setImageViewResource(R.id.appLogo, R.mipmap.ic_launcher);
+        views.setImageViewResource(R.id.add_plan, android.R.drawable.ic_input_add);
+        Intent intent = new Intent(context, DialogActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.add_plan, pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
