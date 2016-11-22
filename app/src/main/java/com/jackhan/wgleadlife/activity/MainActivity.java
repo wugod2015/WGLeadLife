@@ -24,6 +24,7 @@ import com.jackhan.wgleadlife.bean.LeadPlan;
 import com.jackhan.wgleadlife.db.DBHelper;
 import com.jackhan.wgleadlife.db.LeadPlanDao;
 import com.jackhan.wgleadlife.fragment.AddPlanDialog;
+import com.jackhan.wgleadlife.fragment.CalendarFragment;
 import com.jackhan.wgleadlife.fragment.LeadPlanFragment;
 import com.jackhan.wgleadlife.fragment.MainDrawerMenuFragment;
 import com.jackhan.wgleadlife.utils.DisplayUtils;
@@ -107,7 +108,7 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
         fragments.add(leadPlanFragment);
         mTabLayout.addTab(mTabLayout.newTab().setText("Today"));
 
-        fragments.add(new LeadPlanFragment());
+        fragments.add(new CalendarFragment());
         mTabLayout.addTab(mTabLayout.newTab().setText("Process"));
 
         fragments.add(new LeadPlanFragment());
@@ -236,5 +237,6 @@ public class MainActivity extends LockableActivity implements AddPlanDialog.OnAd
     public void onListFragmentInteraction(LeadPlan item) {
 
     }
+
 
 }

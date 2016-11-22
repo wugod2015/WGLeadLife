@@ -28,4 +28,7 @@
     <string name="daily_quote_text">生活的梦，永远不止如此！</string>
     <string name="add_widget">Add widget</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

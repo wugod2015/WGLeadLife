@@ -9,26 +9,38 @@ import android.widget.RemoteViews;
 
 import com.jackhan.wgleadlife.R;
 import com.jackhan.wgleadlife.activity.DialogActivity;
-import com.jackhan.wgleadlife.activity.MainActivity;
+import com.jackhan.wgleadlife.service.PlanListWidgetService;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class AddPlan_AppWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    RemoteViews remoteViews;
+
+    void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                         int appWidgetId) {
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.add_plan__app_widget);
-        views.setImageViewResource(R.id.appLogo, R.mipmap.ic_launcher);
-        views.setImageViewResource(R.id.add_plan, android.R.drawable.ic_input_add);
+        remoteViews = new RemoteViews(context.getPackageName(), R.layout.add_plan__app_widget);
+        remoteViews.setImageViewResource(R.id.appLogo, R.mipmap.ic_launcher);
+        remoteViews.setImageViewResource(R.id.add_plan, android.R.drawable.ic_input_add);
         Intent intent = new Intent(context, DialogActivity.class);
+        intent.putExtra("AppWidgetId", appWidgetId);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.add_plan, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.add_plan, pendingIntent);
+
+        Intent serviceIntent = new Intent(context, PlanListWidgetService.class);
+        remoteViews.setRemoteAdapter(R.id.planListView, serviceIntent);
+        Intent gridIntent = new Intent();
+        gridIntent.setAction("COLLECTION_VIEW_ACTION");
+        gridIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        PendingIntent pendingIntentPlans = PendingIntent.getBroadcast(context, 0, gridIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // 设置intent模板
+        remoteViews.setPendingIntentTemplate(R.id.planListView, pendingIntentPlans);
 
         // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
     @Override
