@@ -86,6 +86,8 @@
         <receiver android:name=".app_widget.AddPlan_AppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.jackhan.wgleadlife.ACTION_REFRESH_PLANS" />
+                <action android:name="com.jackhan.wgleadlife.ACTION_PLAN_CLICK" />
             </intent-filter>
 
             <meta-data
@@ -97,6 +99,10 @@
             android:name=".activity.DialogActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert"></activity>
+
+        <service
+            android:name=".service.PlanListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

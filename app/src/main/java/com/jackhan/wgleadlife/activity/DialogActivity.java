@@ -1,5 +1,6 @@
 package com.jackhan.wgleadlife.activity;
 
+import android.appwidget.AppWidgetManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,7 @@ public class DialogActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appWidgetId = getIntent().getIntExtra("AppWidgetId", -1);
+        appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         setContentView(R.layout.activity_dialog);
         editText = (EditText) findViewById(R.id.editText);
     }
@@ -34,6 +35,8 @@ public class DialogActivity extends AppCompatActivity {
 
     public void onOkClick(View v) {
         LeadPlanManager.getInstance(this).addPlan("", editText.getText().toString());
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.planListView);
         finish();
     }
 
